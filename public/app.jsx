@@ -1,55 +1,37 @@
-var logMixin = {
-    log:function(methodName,args){
-       console.log(this.name + " :: " + methodName,args);
-    },
-    componentDidUpdate:function(){this.log("componentDidUpdate",arguments);},
-}
-
-var component = React.createClass({
-      name:'TextAreaCounter',
-      mixins:[logMixin],
-         
-    // componentDidUpdate:function(oldProps,oldState){
-     
-    //     if(this.state.text.length > 5){
-    //         alert("this is too long ");
-    //         this.replaceState(oldState);
-    //     }
-        
-    // },
-
-    propTypes:{
-         defaultValue:React.PropTypes.string
-    },
-    textChange:function(e){
-     this.setState({
-       text:e.target.value,
-     })
-    },
-    componentWillReceiveProps:function(newProps){
-     this.setState({
-            text:newProps.defaultValue
-     })
-    },
-    getInitialState:function(){
-    return {
-        text:this.props.defaultValue
-      }
-    },
-
+var headers = [
+"Book", "Author", "Language", "Published", "Sales"
+];
+var data = [
+["The Lord of the Rings", "J. R. R. Tolkien",
+"English", "1954–1955", "150 million"],
+["Le Petit Prince (The Little Prince)", "Antoine de Saint-Exupéry",
+"French", "1943", "140 million"],
+["Harry Potter and the Philosopher's Stone", "J. K. Rowling",
+"English", "1997", "107 million"],
+["And Then There Were None", "Agatha Christie",
+"English", "1939", "100 million"],
+["Dream of the Red Chamber", "Cao Xueqin",
+"Chinese", "1754–1791", "100 million"],
+]
+var Excel = React.createClass({
     render:function(){
-
-        return React.DOM.div(null,
-
-        React.DOM.textarea({
-            onChange:this.textChange,
-            value:this.state.text
-        
-    }),
-
-        React.DOM.h1(null,this.state.text.length)
-
-        )
+        return (
+            React.DOM.table(null,
+             React.DOM.thead(null,
+              React.DOM.tr(null,
+              this.props.headers.map(function(title){
+                  return React.DOM.th(null,title)
+              })
+             )//tr end           
+           )  // thead end 
+         ) // table end
+       );
     }
-})
-ReactDOM.render(React.createElement(component,{defaultValue:"pakistan"}),document.getElementById("app"));
+});
+ReactDOM.render(
+    React.createElement(Excel,{
+        headers:headers,
+        initialData:data,
+    }),
+    document.getElementById("app")
+)
