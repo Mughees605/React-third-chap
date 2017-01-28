@@ -14,6 +14,13 @@ var data = [
 "Chinese", "1754–1791", "100 million"],
 ]
 var Excel = React.createClass({
+    
+    getInitialState:function(){
+        return {
+            data:this.props.initialData,
+        }
+    },
+
     render:function(){
         return (
             React.DOM.table(null,
@@ -23,7 +30,20 @@ var Excel = React.createClass({
                   return React.DOM.th(null,title)
               })
              )//tr end           
-           )  // thead end 
+           ),  // thead end 
+           React.DOM.tbody(null,
+           this.state.data.map(function(row,idx){
+           return(
+               React.DOM.tr({key:idx},
+
+               row.map(function(cell,idx){
+                   return React.DOM.td({key:idx},cell);
+               })
+               
+               )
+           )    
+           })
+           ) //tbody end
          ) // table end
        );
     }
