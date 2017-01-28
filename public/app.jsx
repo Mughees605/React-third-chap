@@ -15,6 +15,17 @@ var data = [
 ]
 var Excel = React.createClass({
     
+    propTypes:{
+        headers:React.PropTypes.arrayOf(
+            React.PropTypes.string
+        ),
+        initialData:React.PropTypes.arrayOf(
+            React.PropTypes.arrayOf(
+                React.PropTypes.string
+            )
+        )
+    },
+
     getInitialState:function(){
         return {
             data:this.props.initialData,
