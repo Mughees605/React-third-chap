@@ -13,6 +13,7 @@ var data = [
     ["Dream of the Red Chamber", "Cao Xueqin",
         "Chinese", "1754–1791", "100 million"],
 ]
+var value = false;
 var Excel = React.createClass({
 
     propTypes: {
@@ -29,30 +30,52 @@ var Excel = React.createClass({
     getInitialState: function () {
         return {
             data: this.props.initialData,
+            sortby:null,
+            descending:false,
         }
     },
+    // sort function
     sort: function (e) {
         var column = e.target.cellIndex;
         var data = this.state.data.slice();
+        var descending = this.state.sortby === column;
+        console.log(descending);
+        //
+        console.log(this.state.sortby);
         data.sort(function(a,b){
             return a[column] > b[column] ? 1 : -1;
         })
         this.setState({
-            data:data
+            data:data,
+            sortby:column,
+            descending:descending
+
         })
     },
 
+    //sort function end
+
+  // edit function start
+  edit:function(e){
+     this.setState({
+         edit:{
+             row:parseInt(e.target.dataset.row,10),
+             cell:e.target.cellIndex,
+         }
+     })
+  },
+  // edit function end
     render: function () {
         return (
             React.DOM.table(null,
                 React.DOM.thead({ onClick: this.sort },
                     React.DOM.tr(null,
-                        this.props.headers.map(function (title) {
-                            return React.DOM.th(null, title)
+                        this.props.headers.map(function (title,idx) {
+                            return React.DOM.th({key:idx}, title)
                         })
                     )//tr end           
                 ),  // thead end 
-                React.DOM.tbody(null,
+                React.DOM.tbody({onDoubleClick:this.edit},
                     this.state.data.map(function (row, idx) {
                         return (
                             React.DOM.tr({ key: idx },
@@ -69,7 +92,7 @@ var Excel = React.createClass({
         );
     }
 });
-ReactDOM.render(
+var me = ReactDOM.render(
     React.createElement(Excel, {
         headers: headers,
         initialData: data,
