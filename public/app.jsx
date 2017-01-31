@@ -13,7 +13,7 @@ var data = [
     ["Dream of the Red Chamber", "Cao Xueqin",
         "Chinese", "1754–1791", "100 million"],
 ]
-var value = false;
+var value;
 var Excel = React.createClass({
 
     propTypes: {
@@ -36,21 +36,39 @@ var Excel = React.createClass({
     },
     // sort function
     sort: function (e) {
+        value ^= true;
         var column = e.target.cellIndex;
         var data = this.state.data.slice();
-        var descending = this.state.sortby === column;
-        console.log(descending);
-        //
-        console.log(this.state.sortby);
-        data.sort(function(a,b){
-            return a[column] > b[column] ? 1 : -1;
-        })
-        this.setState({
-            data:data,
-            sortby:column,
-            descending:descending
+        if(value == 1){
+            data.sort(function(a,b){
+             return a[column] > b[column]
+            });
+            this.setState({
+                data:data
+            })
+        }
+        else{
+            data.sort(function(a,b){
+                return a[column] < b[column];
+            })
+            this.setState({
+                data:data
+            })
+        }
+        // var descending = this.state.sortby === column;
+        // console.log(descending);
+        // //
+        // console.log(this.state.sortby);
+        // data.sort(function(a,b){
+        //     return a[column] > b[column] ? 1 : -1;
+        // })
+        // this.setState({
+        //     data:data,
+        //     sortby:column,
+        //     descending:descending
 
-        })
+        // })
+
     },
 
     //sort function end
